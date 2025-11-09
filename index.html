@@ -136,12 +136,11 @@ body{
 }
 .foot a:hover{ text-decoration:underline; }
 
-/* 반응형 */
+
 @media (max-width:560px){
   #auth-card.expanded{ width:96%; }
   .btn{ height:44px; border-radius:10px; }
 }
-
 
 .small-note{ font-size:13px; color:var(--muted); margin-top:8px; text-align:center; }
 .success-msg{ color:#2ea44f; font-weight:700; font-size:13px; margin-top:8px; text-align:center; }
@@ -249,7 +248,7 @@ input:-webkit-autofill, textarea:-webkit-autofill { transition: background-color
       if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) { email.classList.add('error'); valid = false; }
       if (!pw.value || pw.value.length < 6) { pw.classList.add('error'); valid = false; }
       if (!valid) { showError('이메일 또는 비밀번호를 확인하세요.'); return; }
-      
+
       window.location.href = 'main.html';
     });
 
@@ -270,7 +269,6 @@ input:-webkit-autofill, textarea:-webkit-autofill { transition: background-color
 
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') showLoginView(); });
 
-    
     focusFirstInput(loginForm);
   </script>
 </body>
