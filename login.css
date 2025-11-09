@@ -13,7 +13,7 @@
   --danger: #e5534b;
 }
 
-/* 페이지 기본 */
+
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
@@ -25,7 +25,7 @@ body{
   -moz-osx-font-smoothing:grayscale;
 }
 
-/* 가운데 정렬 래핑 */
+
 .wrap{
   min-height:100vh;
   display:flex;
@@ -34,7 +34,6 @@ body{
   padding:28px;
 }
 
-/* 카드 컨테이너 */
 .card#auth-card{
   width:420px;
   max-width:96%;
@@ -46,10 +45,10 @@ body{
   border: 1px solid var(--glass-border);
 }
 
-/* 확장 상태 (회원가입 전환 시) */
+
 .card#auth-card.expanded{ width:520px; }
 
-/* 헤더 */
+
 .header{
   padding:18px 20px;
   border-bottom: 1px solid rgba(34,40,49,0.04);
@@ -63,10 +62,10 @@ body{
   font-weight:700;
 }
 
-/* 폼 래퍼 */
+
 .forms{ padding:20px; position:relative; }
 
-/* 폼 공통 */
+
 .form{
   display:none;
   opacity:0;
@@ -79,7 +78,7 @@ body{
   transform: translateY(0);
 }
 
-/* 입력 필드 */
+
 .field{ margin-bottom:12px; }
 .field input{
   width:100%;
@@ -101,13 +100,13 @@ body{
   transform: translateY(-2px);
 }
 
-/* 에러 상태 */
+
 .field input.error{
   border-color: var(--danger);
   box-shadow: 0 8px 30px rgba(229,83,75,0.06);
 }
 
-/* 버튼 */
+
 .btn{
   width:100%;
   height:46px;
@@ -125,7 +124,7 @@ body{
 .btn:active{ transform: translateY(2px) scale(.998); }
 .btn[disabled]{ opacity:0.6; cursor:not-allowed; box-shadow:none; }
 
-/* 설명/풋 노트 */
+
 .foot{
   margin-top:12px;
   font-size:13px;
@@ -139,21 +138,21 @@ body{
 }
 .foot a:hover{ text-decoration:underline; }
 
-/* 반응형 폼 액션(가로에서 세로 전환 등) */
+
 @media (max-width:560px){
   .card#auth-card.expanded{ width:96%; }
   .btn{ height:44px; border-radius:10px; }
 }
 
-/* 추가 유틸리티 (선택) */
+
 .small-note{ font-size:13px; color:var(--muted); margin-top:8px; text-align:center; }
 .success-msg{ color:var(--success); font-weight:700; font-size:13px; margin-top:8px; text-align:center; }
 .error-msg{ color:var(--danger); font-weight:700; font-size:13px; margin-top:8px; text-align:center; }
 
-/* 접근성: 폼 전환 시 키보드 포커스 유지 개선 */
+
 .form input:focus{ outline-offset:2px; }
 
-/* 애니메이션 보강 (선택) */
+
 @keyframes pop-in {
   from { opacity:0; transform: translateY(8px) scale(.995); }
   to { opacity:1; transform: translateY(0) scale(1); }
