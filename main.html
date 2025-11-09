@@ -5,6 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>GoPop 메인</title>
   <link rel="stylesheet" href="main.css" />
+  <style>
+    :root{
+      --hero-height: 420px;
+      --shot-width: 320px;
+      --shot-height: 180px;
+      --gap: 16px;
+    }
+    .hero{padding:40px 20px}
+    .hero-inner{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+    .hero-media{position:relative;flex:0 0 auto}
+    .screenshot{display:block;width:680px;height:var(--hero-height);object-fit:cover;border-radius:8px}
+    .download-btn{position:absolute;right:12px;bottom:12px;padding:10px 14px;background:#000;color:#fff;border:none;border-radius:6px;cursor:pointer}
+    .hero-copy{flex:1 1 280px;min-width:220px}
+    .gallery .shots{display:flex;gap:var(--gap);flex-wrap:wrap;justify-content:flex-start}
+    .gallery .shot{width:calc((100% - (var(--gap) * 2)) / 3);max-width:var(--shot-width);height:var(--shot-height);object-fit:cover;border-radius:6px;display:block}
+    @media (max-width:1000px){
+      .screenshot{width:100%;height:320px}
+      .gallery .shot{width:48%;max-width:none}
+    }
+    @media (max-width:560px){
+      .gallery .shot{width:100%}
+    }
+  </style>
 </head>
 <body>
   <header class="topbar">
@@ -22,7 +45,6 @@
     <section class="hero scroll-reveal">
       <div class="hero-inner">
         <div class="hero-media">
-          <!-- 히어로 스크린샷: GitHub 저장소에 올려둔 이미지 (raw URL 사용) -->
           <img class="screenshot" src="https://raw.githubusercontent.com/beoseuteo53-star/gopop.github.io/main/gopop.png" alt="앱 대시보드 스크린샷" />
           <button class="download-btn" id="downloadBtn">다운로드</button>
         </div>
@@ -73,9 +95,9 @@
     <section class="gallery scroll-reveal delay-150">
       <h2>스크린샷</h2>
       <div class="shots">
-        <img class="shot" src="assets/images/screenshot-1.png" alt="대시보드 스크린샷" />
-        <img class="shot" src="assets/images/screenshot-2.png" alt="플러그인 설정 화면" />
-        <img class="shot" src="assets/images/screenshot-3.png" alt="채팅 오버레이 화면" />
+        <img class="shot" src="https://raw.githubusercontent.com/beoseuteo53-star/gopop.github.io/main/png1.hero.png" alt="스크린샷 1" />
+        <img class="shot" src="https://raw.githubusercontent.com/beoseuteo53-star/gopop.github.io/main/png2.hero.png" alt="스크린샷 2" />
+        <img class="shot" src="https://raw.githubusercontent.com/beoseuteo53-star/gopop.github.io/main/png3.hero.png" alt="스크린샷 3" />
       </div>
     </section>
 
@@ -126,32 +148,35 @@
 document.addEventListener('DOMContentLoaded', () => {
   const downloadBtn = document.getElementById('downloadBtn');
   const downloadBtn2 = document.getElementById('downloadBtn2');
-
-  // 실제 다운로드 파일이 저장소에 올라가 있으면 아래 a.href를 그 경로로 바꿔 주세요.
-  // 예: 'assets/files/GoPop-tool.zip' 또는 raw.githubusercontent URL
-  const downloadPath = 'assets/files/GoPop-tool.zip';
-
-  if (downloadBtn) {
-    downloadBtn.addEventListener('click', () => {
-      const a = document.createElement('a');
-      a.href = downloadPath;
-      a.download = 'GoPop-tool.zip';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    });
+  const sameOriginPath = '/gopop-v1.0.0.zip';
+  const rawUrl = 'https://raw.githubusercontent.com/beoseuteo53-star/gopop.github.io/main/gopop-v1.0.0.zip';
+  async function downloadBlob(url, filename){
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('fetch failed');
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(blobUrl);
   }
-  if (downloadBtn2) {
-    downloadBtn2.addEventListener('click', () => {
-      const a = document.createElement('a');
-      a.href = downloadPath;
-      a.download = 'GoPop-tool.zip';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    });
+  async function tryDownload(){
+    const filename = 'gopop-v1.0.0.zip';
+    try {
+      await downloadBlob(sameOriginPath, filename);
+    } catch (e) {
+      try {
+        await downloadBlob(rawUrl, filename);
+      } catch (err) {
+        window.open(rawUrl, '_blank', 'noopener,noreferrer');
+      }
+    }
   }
-
+  if (downloadBtn) downloadBtn.addEventListener('click', tryDownload);
+  if (downloadBtn2) downloadBtn2.addEventListener('click', tryDownload);
   const revealEls = document.querySelectorAll('.scroll-reveal');
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -162,7 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, { threshold: 0.12 });
   revealEls.forEach(el => obs.observe(el));
-
   const discordBtn = document.getElementById('discordServer');
   if (discordBtn) {
     const discordLink = 'https://discord.gg/unji';
