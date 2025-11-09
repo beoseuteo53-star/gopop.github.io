@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GoPop 메인</title>
+  <link rel="stylesheet" href="main.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-icon">G</div>
+      <div class="brand-text">
+        <div class="brand-title">Discord Tool</div>
+        <div class="brand-sub">디스코드 최강의 툴 고팝</div>
+      </div>
+    </div>
+    <div class="top-actions"></div>
+  </header>
+
+  <main class="page">
+    <section class="hero scroll-reveal">
+      <div class="hero-inner">
+        <div class="hero-media">
+          <div class="screenshot" aria-hidden="true"></div>
+          <button class="download-btn" id="downloadBtn">다운로드</button>
+        </div>
+        <div class="hero-copy">
+          <h1 class="product-title">Discord Tool</h1>
+          <p class="product-sub">디스코드 최강의 툴 고팝</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="feature-row scroll-reveal delay-100">
+        <div class="feature-left card">
+          <h2 class="feature-heading">고팝이 뭔가요?</h2>
+          <p class="feature-lead">디스코드에 있는 최강의 툴 입니다.</p>
+          <p class="feature-text">여러분의 근성 수준을 업그레이드 합니다.</p>
+        </div>
+
+        <div class="feature-right card">
+          <h3 class="feature-question">다른 툴은 또 뭐가 있나요?</h3>
+          <p class="feature-answer">플러그인 입니다. 이 플러그인은 키배 수준을 업그레이드 합니다.</p>
+        </div>
+      </div>
+
+      <div class="feature-row scroll-reveal delay-200">
+        <div class="card">
+          <h3>강력한 성능</h3>
+          <p>최적화된 코드로 빠른 반응을 지원합니다.</p>
+        </div>
+        <div class="card">
+          <h3>안정성</h3>
+          <p>오랜 테스트를 거쳐 안정적으로 동작합니다.</p>
+        </div>
+      </div>
+
+      <div class="feature-row scroll-reveal delay-300">
+        <div class="card">
+          <h3>지원</h3>
+          <p>윈도우 , 리눅스를 지원하고 있습니다.</p>
+        </div>
+        <div class="card">
+          <h3>빠른 업데이트</h3>
+          <p>지속적인 개선으로 신기능을 빠르게 배포합니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery scroll-reveal delay-150">
+      <h2>스크린샷</h2>
+      <div class="shots">
+        <div class="shot"></div>
+        <div class="shot"></div>
+        <div class="shot"></div>
+      </div>
+    </section>
+
+    <section class="two-col scroll-reveal delay-200">
+      <div class="left card">
+        <h2>고팝이 뭔가요?</h2>
+        <p>디스코드에 있는 최강의 툴입니다. 여러분의 싸움을 승률을 증가합니다.</p>
+      </div>
+      <div class="right card">
+        <h2>다른 툴은 또 뭐가 있나요?</h2>
+        <p>플러그인입니다. 이 플러그인은 자동으로 동작하며 설정에 따라 다양한 효과를 냅니다.</p>
+      </div>
+    </section>
+
+    <section class="cta scroll-reveal delay-250">
+      <div class="cta-inner">
+        <button class="download-btn large" id="downloadBtn2">다운로드</button>
+        <div class="server" id="discordServer">
+          <div class="server-icon">↗</div>
+          <div class="server-text">디스코드 서버</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq scroll-reveal delay-300">
+      <h2>자주 묻는 질문</h2>
+      <div class="qa">
+        <div class="q card">
+          <h4>설치 방법은?</h4>
+          <p>다운로드 후 압축을 풀고 실행하면 됩니다.</p>
+        </div>
+        <div class="q card">
+          <h4>지원 플랫폼</h4>
+          <p>Windows 중심으로 지원합니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer scroll-reveal delay-150">
+      <div class="footer-inner">
+        <div class="copyright">© ori's tools</div>
+        <a class="policy" href="#">개인정보처리방침</a>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const downloadBtn = document.getElementById('downloadBtn');
+  const downloadBtn2 = document.getElementById('downloadBtn2');
+  if (downloadBtn) {
+    downloadBtn.addEventListener('click', () => {
+      const a = document.createElement('a');
+      a.href = '#';
+      a.download = 'GoPop-tool.zip';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    });
+  }
+  if (downloadBtn2) {
+    downloadBtn2.addEventListener('click', () => {
+      const a = document.createElement('a');
+      a.href = '#';
+      a.download = 'GoPop-tool.zip';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    });
+  }
+
+  const revealEls = document.querySelectorAll('.scroll-reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => obs.observe(el));
+
+  const discordBtn = document.getElementById('discordServer');
+  if (discordBtn) {
+    const discordLink = 'https://discord.gg/unji';
+    let animating = false;
+    discordBtn.addEventListener('click', () => {
+      if (animating) return;
+      animating = true;
+      discordBtn.classList.remove('server-animate','server-shake');
+      void discordBtn.offsetWidth;
+      discordBtn.classList.add('server-animate');
+      setTimeout(() => {
+        window.open(discordLink, '_blank', 'noopener,noreferrer');
+        animating = false;
+      }, 520);
+    });
+  }
+});
+  </script>
+</body>
+</html>
