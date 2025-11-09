@@ -4,7 +4,153 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GoPop 로그인</title>
-  <link rel="stylesheet" href="main.css" />
+  <style>
+
+:root{
+  --bg: #eef1f4;
+  --card: #ffffff;
+  --muted: #9aa1a8;
+  --accent: #ffd966;
+  --black: #0b0b0b;
+  --radius: 12px;
+  --shadow-lg: 0 14px 40px rgba(13,20,25,0.10);
+  --shadow-sm: 0 8px 22px rgba(13,20,25,0.06);
+  --accent-blue: #2b6cff;
+  --danger: #e5534b;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: 'Segoe UI', Roboto, "Noto Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif;
+  background: linear-gradient(180deg,var(--bg), #f7f8fa);
+  color:#111;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+
+.card{
+  background:var(--card);
+  border-radius:12px;
+  padding:22px;
+  box-shadow:var(--shadow-sm);
+}
+
+
+.wrap{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:28px;
+  background: linear-gradient(180deg, var(--bg), #eef2f6);
+}
+
+#auth-card{
+  width:420px;
+  max-width:96%;
+  border-radius:16px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.98), var(--card));
+  box-shadow:var(--shadow-lg);
+  overflow:hidden;
+  transition: all 260ms cubic-bezier(.2,.9,.2,1);
+  border: 1px solid rgba(34,40,49,0.04);
+}
+
+#auth-card.expanded{ width:520px; }
+
+.header{
+  padding:18px 20px;
+  border-bottom: 1px solid rgba(34,40,49,0.04);
+  background: linear-gradient(180deg, rgba(255,255,255,0.6), transparent);
+}
+.header h2{
+  margin:0;
+  font-size:20px;
+  letter-spacing:-0.2px;
+  color:#111827;
+  font-weight:700;
+}
+
+.forms{ padding:20px; position:relative; }
+
+.form{ display:none; opacity:0; transform: translateY(8px); transition: all 300ms cubic-bezier(.2,.9,.2,1); }
+.form.active{ display:block; opacity:1; transform: translateY(0); animation: pop-in 260ms cubic-bezier(.2,.9,.2,1) both; }
+
+@keyframes pop-in { from { opacity:0; transform: translateY(8px) scale(.995); } to { opacity:1; transform: translateY(0) scale(1); } }
+
+.field{ margin-bottom:12px; }
+.field input{
+  width:100%;
+  height:44px;
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid rgba(34,40,49,0.07);
+  background:linear-gradient(180deg,#fff,#fbfdff);
+  font-size:14px;
+  color:#111;
+  outline:none;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  box-shadow: 0 4px 14px rgba(17,24,39,0.03);
+}
+.field input::placeholder{ color:#bfc7d0; font-size:13px; }
+.field input:focus{
+  border-color: rgba(43,108,255,0.12);
+  box-shadow: 0 8px 30px rgba(43,108,255,0.06);
+  transform: translateY(-2px);
+}
+.field input.error{
+  border-color: var(--danger);
+  box-shadow: 0 8px 30px rgba(229,83,75,0.06);
+}
+
+.btn{
+  width:100%;
+  height:46px;
+  border-radius:12px;
+  border:none;
+  background:var(--accent-blue);
+  color:#fff;
+  font-weight:700;
+  font-size:15px;
+  cursor:pointer;
+  box-shadow: 0 8px 24px rgba(43,108,255,0.12);
+  transition: transform 140ms ease, box-shadow 140ms ease, opacity 120ms;
+  margin-top:6px;
+}
+.btn:active{ transform: translateY(2px) scale(.998); }
+.btn[disabled]{ opacity:0.6; cursor:not-allowed; box-shadow:none; }
+
+.foot{
+  margin-top:12px;
+  font-size:13px;
+  color:var(--muted);
+  text-align:center;
+}
+.foot a{
+  color:var(--accent-blue);
+  text-decoration:none;
+  font-weight:700;
+}
+.foot a:hover{ text-decoration:underline; }
+
+/* 반응형 */
+@media (max-width:560px){
+  #auth-card.expanded{ width:96%; }
+  .btn{ height:44px; border-radius:10px; }
+}
+
+
+.small-note{ font-size:13px; color:var(--muted); margin-top:8px; text-align:center; }
+.success-msg{ color:#2ea44f; font-weight:700; font-size:13px; margin-top:8px; text-align:center; }
+.error-msg{ color:var(--danger); font-weight:700; font-size:13px; margin-top:8px; text-align:center; }
+
+
+a{ color:inherit; }
+input:-webkit-autofill, textarea:-webkit-autofill { transition: background-color 600000s 0s, color 600000s 0s; }
+  </style>
 </head>
 <body>
   <div class="wrap">
@@ -14,25 +160,25 @@
       </div>
 
       <div class="forms">
-        <form id="login-form" class="form active" onsubmit="login(event)" autocomplete="off">
+        <form id="login-form" class="form active" autocomplete="off">
           <div class="field">
             <input type="email" id="login-email" placeholder="이메일 주소" required />
           </div>
           <div class="field">
             <input type="password" id="login-password" placeholder="비밀번호" required />
           </div>
-          <button type="submit" class="btn">로그인</button>
+          <button type="button" class="btn" id="btn-login">로그인</button>
           <div class="foot">계정이 없으신가요? <a href="#" id="to-signup">회원가입</a></div>
         </form>
 
-        <form id="signup-form" class="form" onsubmit="signup(event)" autocomplete="off">
+        <form id="signup-form" class="form" autocomplete="off">
           <div class="field">
             <input type="email" id="signup-email" placeholder="이메일 주소" required />
           </div>
           <div class="field">
             <input type="password" id="signup-password" placeholder="비밀번호" required />
           </div>
-          <button type="submit" class="btn">회원가입</button>
+          <button type="button" class="btn" id="btn-signup">회원가입</button>
           <div class="foot">이미 계정이 있으신가요? <a href="#" id="to-login">로그인</a></div>
         </form>
       </div>
@@ -46,6 +192,15 @@
     const signupForm = document.getElementById('signup-form');
     const toSignup = document.getElementById('to-signup');
     const toLogin = document.getElementById('to-login');
+    const btnLogin = document.getElementById('btn-login');
+    const btnSignup = document.getElementById('btn-signup');
+
+    function clearInputs() {
+      const inputs = authCard.querySelectorAll('input');
+      inputs.forEach(i => i.value = '');
+      inputs.forEach(i => i.classList.remove('error'));
+      removeMessage();
+    }
 
     function showSignupView() {
       loginForm.classList.remove('active');
@@ -53,6 +208,7 @@
       authCard.classList.add('expanded');
       titleEl.textContent = 'GoPop 회원가입';
       clearInputs();
+      focusFirstInput(signupForm);
     }
 
     function showLoginView() {
@@ -61,37 +217,61 @@
       authCard.classList.remove('expanded');
       titleEl.textContent = 'GoPop 로그인';
       clearInputs();
+      focusFirstInput(loginForm);
     }
 
-    function clearInputs() {
-      const inputs = authCard.querySelectorAll('input');
-      inputs.forEach(i => i.value = '');
+    function focusFirstInput(formEl){
+      const first = formEl.querySelector('input');
+      if (first) first.focus();
+    }
+
+    function removeMessage(){
+      const old = authCard.querySelector('.small-note, .error-msg, .success-msg');
+      if (old) old.remove();
+    }
+
+    function showError(message){
+      removeMessage();
+      const el = document.createElement('div');
+      el.className = 'error-msg';
+      el.textContent = message;
+      authCard.querySelector('.forms').appendChild(el);
     }
 
     toSignup.addEventListener('click', (e) => { e.preventDefault(); showSignupView(); });
     toLogin.addEventListener('click', (e) => { e.preventDefault(); showLoginView(); });
 
-    function login(e) {
-      e.preventDefault();
-      const email = document.getElementById('login-email').value.trim();
-      const pw = document.getElementById('login-password').value.trim();
-      if (!email || !pw) return;
-      clearInputs();
+    btnLogin.addEventListener('click', () => {
+      const email = document.getElementById('login-email');
+      const pw = document.getElementById('login-password');
+      let valid = true;
+      [email, pw].forEach(i => i.classList.remove('error'));
+      if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) { email.classList.add('error'); valid = false; }
+      if (!pw.value || pw.value.length < 6) { pw.classList.add('error'); valid = false; }
+      if (!valid) { showError('이메일 또는 비밀번호를 확인하세요.'); return; }
+      
       window.location.href = 'main.html';
-    }
-
-    function signup(e) {
-      e.preventDefault();
-      const email = document.getElementById('signup-email').value.trim();
-      const pw = document.getElementById('signup-password').value.trim();
-      if (!email || !pw) return;
-      showLoginView();
-    }
-
-  
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') showLoginView();
     });
+
+    btnSignup.addEventListener('click', () => {
+      const email = document.getElementById('signup-email');
+      const pw = document.getElementById('signup-password');
+      [email, pw].forEach(i => i.classList.remove('error'));
+      let valid = true;
+      if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) { email.classList.add('error'); valid = false; }
+      if (!pw.value || pw.value.length < 6) { pw.classList.add('error'); valid = false; }
+      if (!valid) { showError('유효한 이메일과 6자 이상의 비밀번호를 입력하세요.'); return; }
+      showLoginView();
+      const msg = document.createElement('div');
+      msg.className = 'small-note';
+      msg.textContent = '회원가입이 완료되었습니다. 로그인 해주세요.';
+      authCard.querySelector('.forms').appendChild(msg);
+    });
+
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') showLoginView(); });
+
+    
+    focusFirstInput(loginForm);
   </script>
 </body>
 </html>
