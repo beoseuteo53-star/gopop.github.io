@@ -3,12 +3,62 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gopop 로그인</title>
+  <title>GoPop 로그인</title>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    window.login = (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const pw = document.getElementById("password").value;
+      signInWithEmailAndPassword(auth, email, pw)
+        .then(() => alert("로그인 성공!"))
+        .catch((err) => alert("로그인 실패: " + err.message));
+    };
+
+    window.signup = (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const pw = document.getElementById("password").value;
+      createUserWithEmailAndPassword(auth, email, pw)
+        .then(() => alert("회원가입 완료!"))
+        .catch((err) => alert("회원가입 실패: " + err.message));
+    };
+
+    window.showSignup = () => {
+      document.getElementById("form-box").innerHTML = `
+        <h2>GoPop 회원가입</h2>
+        <form onsubmit="signup(event)">
+          <div class="input-group">
+            <input type="email" id="email" placeholder="이메일 주소" required />
+            <input type="password" id="password" placeholder="비밀번호" required />
+          </div>
+          <button type="submit">회원가입</button>
+        </form>
+        <div class="link">이미 계정이 있으신가요? <a href="#" onclick="location.reload()">로그인</a></div>
+      `;
+    };
+  </script>
   <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #f8f9fa, #e9ecef);
+      background: #f5f6f8;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -21,19 +71,25 @@
       box-shadow: 0 8px 24px rgba(0,0,0,0.1);
       width: 100%;
       max-width: 400px;
+      box-sizing: border-box;
     }
     h2 {
       text-align: center;
       margin-bottom: 1.5rem;
       color: #333;
     }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
     input {
       width: 100%;
       padding: 0.75rem;
-      margin-bottom: 1rem;
       border: 1px solid #ccc;
       border-radius: 8px;
       font-size: 1rem;
+      box-sizing: border-box;
     }
     button {
       width: 100%;
@@ -44,6 +100,7 @@
       border-radius: 8px;
       font-size: 1rem;
       cursor: pointer;
+      margin-top: 1rem;
     }
     button:hover {
       background-color: #555;
@@ -63,16 +120,16 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Gopop 로그인</h2>
-    <form>
-      <input type="email" placeholder="이메일 주소" required />
-      <input type="password" placeholder="비밀번호" required />
+  <div class="container" id="form-box">
+    <h2>GoPop 로그인</h2>
+    <form onsubmit="login(event)">
+      <div class="input-group">
+        <input type="email" id="email" placeholder="이메일 주소" required />
+        <input type="password" id="password" placeholder="비밀번호" required />
+      </div>
       <button type="submit">로그인</button>
     </form>
-    <div class="link">
-      계정이 없으신가요? <a href="#">회원가입</a>
-    </div>
+    <div class="link">계정이 없으신가요? <a href="#" onclick="showSignup()">회원가입</a></div>
   </div>
 </body>
 </html>
