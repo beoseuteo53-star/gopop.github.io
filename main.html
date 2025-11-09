@@ -22,7 +22,8 @@
     <section class="hero scroll-reveal">
       <div class="hero-inner">
         <div class="hero-media">
-          <div class="screenshot" aria-hidden="true"></div>
+          <!-- 히어로 스크린샷: GitHub 저장소에 올려둔 이미지 (raw URL 사용) -->
+          <img class="screenshot" src="https://raw.githubusercontent.com/beoseuteo53-star/gopop.github.io/main/gopop.png" alt="앱 대시보드 스크린샷" />
           <button class="download-btn" id="downloadBtn">다운로드</button>
         </div>
         <div class="hero-copy">
@@ -72,9 +73,9 @@
     <section class="gallery scroll-reveal delay-150">
       <h2>스크린샷</h2>
       <div class="shots">
-        <div class="shot"></div>
-        <div class="shot"></div>
-        <div class="shot"></div>
+        <img class="shot" src="assets/images/screenshot-1.png" alt="대시보드 스크린샷" />
+        <img class="shot" src="assets/images/screenshot-2.png" alt="플러그인 설정 화면" />
+        <img class="shot" src="assets/images/screenshot-3.png" alt="채팅 오버레이 화면" />
       </div>
     </section>
 
@@ -125,10 +126,15 @@
 document.addEventListener('DOMContentLoaded', () => {
   const downloadBtn = document.getElementById('downloadBtn');
   const downloadBtn2 = document.getElementById('downloadBtn2');
+
+  // 실제 다운로드 파일이 저장소에 올라가 있으면 아래 a.href를 그 경로로 바꿔 주세요.
+  // 예: 'assets/files/GoPop-tool.zip' 또는 raw.githubusercontent URL
+  const downloadPath = 'assets/files/GoPop-tool.zip';
+
   if (downloadBtn) {
     downloadBtn.addEventListener('click', () => {
       const a = document.createElement('a');
-      a.href = '#';
+      a.href = downloadPath;
       a.download = 'GoPop-tool.zip';
       document.body.appendChild(a);
       a.click();
@@ -138,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (downloadBtn2) {
     downloadBtn2.addEventListener('click', () => {
       const a = document.createElement('a');
-      a.href = '#';
+      a.href = downloadPath;
       a.download = 'GoPop-tool.zip';
       document.body.appendChild(a);
       a.click();
